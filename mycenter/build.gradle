@@ -38,4 +38,5 @@ dependencies {
     kapt "com.google.dagger:dagger-compiler:2.16"
     //ARouter
     kapt "com.alibaba:arouter-compiler:1.2.1"
+    implementation 'com.github.huangyanbin:SmartTable:2.2.0'
 }

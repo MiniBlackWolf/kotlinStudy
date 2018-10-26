@@ -9,6 +9,7 @@ import javax.inject.Singleton
 
 @Module
 class AppModule(private val context:BaseApplication) {
+    @Singleton
     @Provides
     fun ProvideActivity(): Context =context
 }

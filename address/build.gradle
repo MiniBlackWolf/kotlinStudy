@@ -36,6 +36,7 @@ dependencies {
     implementation project(':provider')
     //Dagger2
     kapt "com.google.dagger:dagger-compiler:2.16"
+    implementation 'com.google.dagger:dagger:2.16'
     //ARouter
     kapt "com.alibaba:arouter-compiler:1.2.1"
 }

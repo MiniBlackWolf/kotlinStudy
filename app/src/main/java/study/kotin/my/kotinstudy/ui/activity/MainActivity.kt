@@ -7,6 +7,9 @@ import android.support.v4.app.Fragment
 import android.view.WindowManager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.ashokvarma.bottomnavigation.BottomNavigationBar
+import com.eightbitlab.rxbus.Bus
+import com.eightbitlab.rxbus.registerInBus
+import com.example.home.common.UpdateMessgeSizeEvent
 import com.example.home.ui.Frament.HomeFarment
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.toast
@@ -48,23 +51,19 @@ class MainActivity : AppCompatActivity() {
         manager.show(mStack[0])
         manager.commit()
         initBottomNav()
-        loadCartSize()
+        initObserve()
+        loadCartSize(0)
     }
-//    private fun initObserve(){
-//        Bus.observe<UpdateCartSizeEvent>()
-//                .subscribe {
-//                    loadCartSize()
-//                }.registerInBus(this)
-//
-//        Bus.observe<MessageBadgeEvent>()
-//                .subscribe {
-//                    t: MessageBadgeEvent ->
-//                    run {
-//                        mBottomNavBar.checkMsgBadge(t.isVisible)
-//                    }
-//                }.registerInBus(this)
-//    }
-
+    private fun initObserve(){
+        Bus.observe<UpdateMessgeSizeEvent>()
+                .subscribe {
+                    t:UpdateMessgeSizeEvent ->
+                    loadCartSize(t.count)
+                }.registerInBus(this)
+    }
+    private fun loadCartSize(count:Int){
+        mBottomNavBar.checkMsgBadge(count)
+    }
     /*
        初始化Fragment栈管理
     */
@@ -109,9 +108,7 @@ class MainActivity : AppCompatActivity() {
         manager.commit()
     }
 
-    private fun loadCartSize(){
-        mBottomNavBar.checkMsgBadge(4)
-    }
+
     override fun onBackPressed() {
 
         val time = System.currentTimeMillis()
@@ -124,5 +121,10 @@ class MainActivity : AppCompatActivity() {
         }
 
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Bus.unregister(this)
     }
 }
